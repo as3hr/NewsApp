@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'helper/data.dart';
+import 'helper/news.dart';
+import 'models/ArticleModel.dart';
 import 'models/category_model.dart';
 
 void main() {
@@ -19,13 +22,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _loading = false;
+
   List<CategoryModel> categories = <CategoryModel>[];
+  List<ArticleModel> article = <ArticleModel>[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     categories = getCategories();
+    getNews();
+  }
+
+  getNews() async {
+    News newsClass = News();
+    await newsClass.getnews();
+    article = newsClass.news;
+    setState(() {
+      _loading = false;
+    });
   }
 
   @override
@@ -50,23 +66,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Container(
-          child: Column(children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          height: 70,
-          child: ListView.builder(
-              itemCount: categories.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return CategoryTile(
-                  imageurl: categories[index].imageurl,
-                  categoryName: categories[index].categoryName,
-                );
-              }),
-        ),
-      ])),
+      body: _loading
+          ? Center(
+              child: Container(child: const CircularProgressIndicator()),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(children: [
+                    // Categories
+                    SizedBox(
+                      height: 70,
+                      child: ListView.builder(
+                          itemCount: categories.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return CategoryTile(
+                              imageurl: categories[index].imageurl,
+                              categoryName: categories[index].categoryName,
+                            );
+                          }),
+                    ),
+
+                    //Blogs
+                    Container(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: ListView.builder(
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: article.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return BlogTile(
+                                imageurl: article[index].urlToimage,
+                                title: article[index].title,
+                                desc: article[index].description);
+                          }),
+                    )
+                  ])),
+            ),
     );
   }
 }
@@ -84,14 +122,13 @@ class CategoryTile extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16),
         child: Stack(children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: Image.network(
-              imageurl,
-              width: 120,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          ),
+              borderRadius: BorderRadius.circular(6),
+              child: CachedNetworkImage(
+                imageUrl: imageurl,
+                height: 60,
+                width: 120,
+                fit: BoxFit.cover,
+              )),
           Container(
             width: 120,
             height: 60,
@@ -123,9 +160,40 @@ class BlogTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [Image.network(imageurl), Text(title), Text(desc)],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                imageurl,
+                height: 220,
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                  color: Colors.black),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              desc,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

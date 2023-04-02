@@ -3,14 +3,13 @@ class ArticleModel {
   String title;
   String description;
   String url;
-  String urltoimage;
+  String urlToimage;
   String content;
-
   ArticleModel(
       {required this.author,
       required this.title,
       required this.description,
       required this.url,
-      required this.urltoimage,
+      required this.urlToimage,
       required this.content});
 }
