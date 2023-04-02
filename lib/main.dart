@@ -139,7 +139,7 @@ class CategoryTile extends StatelessWidget {
               categoryName,
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 14.5,
                   fontWeight: FontWeight.bold),
             )),
           )
