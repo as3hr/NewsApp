@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:news_app/Views/article_view.dart';
+import 'package:news_app/Views/category_news.dart';
 import 'helper/data.dart';
 import 'helper/news.dart';
 import 'models/ArticleModel.dart';
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _loading = false;
+  bool _loading = true;
 
   List<CategoryModel> categories = <CategoryModel>[];
   List<ArticleModel> article = <ArticleModel>[];
@@ -98,9 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return BlogTile(
-                                imageurl: article[index].urlToimage,
-                                title: article[index].title,
-                                desc: article[index].description);
+                              imageurl: article[index].urlToimage,
+                              title: article[index].title,
+                              desc: article[index].description,
+                              url: article[index].url,
+                            );
                           }),
                     )
                   ])),
@@ -111,13 +115,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class CategoryTile extends StatelessWidget {
   final imageurl;
-  final categoryName;
-  const CategoryTile({super.key, this.imageurl, this.categoryName});
+  String categoryName;
+  CategoryTile({super.key, this.imageurl, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CategoryNews(
+                      categoryName: categoryName.toLowerCase(),
+                    )));
+      },
       child: Container(
         margin: const EdgeInsets.only(right: 16),
         child: Stack(children: [
@@ -150,17 +161,26 @@ class CategoryTile extends StatelessWidget {
 }
 
 class BlogTile extends StatelessWidget {
-  final String imageurl, title, desc;
+  final String imageurl, title, desc, url;
 
   const BlogTile(
       {super.key,
       required this.imageurl,
       required this.title,
-      required this.desc});
+      required this.desc,
+      required this.url});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => AtricleView(
+                      blogurl: url,
+                    )));
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         child: Column(
