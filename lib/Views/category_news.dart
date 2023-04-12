@@ -46,11 +46,14 @@ class _CategoryNewsState extends State<CategoryNews> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Text(
-                'Flutter',
+                'News',
                 style: TextStyle(color: Colors.black),
               ),
+              SizedBox(
+                width: 2,
+              ),
               Text(
-                'News',
+                'Today',
                 style: TextStyle(color: Colors.blue),
               )
             ],
