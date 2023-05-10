@@ -1,16 +1,10 @@
-# news_app
+N E W S - A P P L I C A T I O N
 
-A new Flutter project.
+D E M O - O F - T H E - G A M E:
 
-## Getting Started
+https://github.com/as3hr/NewsApp/assets/113264020/0f9baa46-7895-4424-8e14-e87e05ee2ac9
 
-This project is a starting point for a Flutter application.
+Features:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- This news application is using open source news Api which displays the news according to the categories.
+- There are multiple categories on the screen's top and the user can read the news by selecting its favourite category
