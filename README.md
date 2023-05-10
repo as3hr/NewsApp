@@ -1,6 +1,6 @@
 N E W S - A P P L I C A T I O N
 
-D E M O - O F - T H E - G A M E:
+D E M O - O F - T H E - A P P:
 
 https://github.com/as3hr/NewsApp/assets/113264020/0f9baa46-7895-4424-8e14-e87e05ee2ac9
 
